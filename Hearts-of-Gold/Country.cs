@@ -102,7 +102,7 @@ namespace HeartsOfGold
                 defender.Energy = 0;
                 // Attacker takes some cost in energy and loses a bit of defense an strength is divided by 20
                 this.Energy = Math.Max(0, this.Energy - 20);
-                this.DefensePower = Math.Max(0, this.DefensePower - (defenseStrength / 20));
+                this.DefensePower = Math.Max(0, this.DefensePower - (defenseStrength / 20)); 
                 return true;
             }
             else
@@ -117,7 +117,7 @@ namespace HeartsOfGold
             }
         }
 
-        // Expose allies as read-only names (for display)
+        // Display name for Allies
         public IEnumerable<string> GetAlliesNames()
         {
             return allies.Select(a => a.Name);

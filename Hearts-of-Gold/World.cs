@@ -11,6 +11,7 @@ namespace HeartsOfGold
         public World()
         {
             // countries (attack, defense, energy)
+            //if New country is added here, remember to update Game.cs country selection logic!!!! It does not auto update!!!
             AddCountry(new Country("Sweden", 40, 50, 80));
             AddCountry(new Country("Germany", 80, 100, 120));
             AddCountry(new Country("United Kingdom", 70, 90, 100));
@@ -19,19 +20,19 @@ namespace HeartsOfGold
             AddCountry(new Country("Norway", 30, 35, 60));
         }
 
-        public void AddCountry(Country country)
+        public void AddCountry(Country country) //Makes sure to not make duplicates of countries.
         {
             if (country != null && !Countries.Any(c => c.Name.Equals(country.Name, StringComparison.OrdinalIgnoreCase)))
                 Countries.Add(country);
         }
 
-        public Country GetCountryByName(string name)
+        public Country GetCountryByName(string name) // Checks if the country exists by name + to avoid duplicates. Example ignore Sweden and sweden.
         {
             if (string.IsNullOrWhiteSpace(name)) return null;
             return Countries.FirstOrDefault(c => c.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
         }
 
-        public void PrintAllCountries()
+        public void PrintAllCountries() // basically just print the countries.
         {
             Console.WriteLine("=== Countries ===");
             foreach (var c in Countries)
