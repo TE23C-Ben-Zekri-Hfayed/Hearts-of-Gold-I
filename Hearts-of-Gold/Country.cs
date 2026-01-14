@@ -6,7 +6,7 @@ namespace HeartsOfGold
 {
     public class Country
     {
-        // Private fields
+        // Private 
         private string name;
         private int attack;
         private int defense;
@@ -14,7 +14,7 @@ namespace HeartsOfGold
         private bool isConquered;
         private List<Country> allies;
 
-        // Public properties (encapsulation)
+        // Public 
         public string Name => name;
         public int AttackPower
         {
@@ -29,11 +29,11 @@ namespace HeartsOfGold
         public int Energy
         {
             get => energy;
-            set => energy = Math.Clamp(value, 0, 200); // cap to avoid runaway values
+            set => energy = Math.Clamp(value, 0, 200); // cap 200
         }
         public bool IsConquered => isConquered;
 
-        // Constructor
+        // The Constructor
         public Country(string name, int attack, int defense, int energy)
         {
             this.name = name;
@@ -44,7 +44,7 @@ namespace HeartsOfGold
             this.allies = new List<Country>(); // start empty
         }
 
-        // Print status
+        // Print status the info about the country
         public void PrintStatus()
         {
             string allyNames = allies.Count == 0 ? "None" : string.Join(", ", allies.Select(a => a.Name));
@@ -70,17 +70,17 @@ namespace HeartsOfGold
         {
             if (defender == null)
             {
-                Console.WriteLine("Defender not found.");
+                Console.WriteLine("Defender not found."); // If User inputs non existent country
                 return false;
             }
             if (this.isConquered)
             {
-                Console.WriteLine($"{Name} is conquered and cannot attack.");
+                Console.WriteLine($"{Name} is conquered and cannot attack."); // If Attacker is conquered by another country
                 return false;
             }
             if (defender.isConquered)
             {
-                Console.WriteLine($"{defender.Name} is already conquered.");
+                Console.WriteLine($"{defender.Name} is already conquered."); // If Defender is already conquered by another country
                 return false;
             }
 
@@ -100,7 +100,7 @@ namespace HeartsOfGold
                 Console.WriteLine($"{Name} has conquered {defender.Name}!");
                 defender.isConquered = true;
                 defender.Energy = 0;
-                // Attacker takes some cost in energy and loses a bit of defense
+                // Attacker takes some cost in energy and loses a bit of defense an strength is divided by 20
                 this.Energy = Math.Max(0, this.Energy - 20);
                 this.DefensePower = Math.Max(0, this.DefensePower - (defenseStrength / 20));
                 return true;
