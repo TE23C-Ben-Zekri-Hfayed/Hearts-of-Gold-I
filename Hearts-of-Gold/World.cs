@@ -22,8 +22,23 @@ namespace HeartsOfGold
 
         public void AddCountry(Country country) //Makes sure to not make duplicates of countries.
         {
-            if (country != null && !Countries.Any(c => c.Name.Equals(country.Name, StringComparison.OrdinalIgnoreCase)))
-                Countries.Add(country);
+            if (country != null)
+            {
+                bool alreadyExists = false;
+
+                foreach (Country c in Countries)
+                {
+                    if (c.Name == country.Name)
+                    {
+                        alreadyExists = true;
+                    }
+                }
+
+                if (!alreadyExists)
+                {
+                    // add country
+                }
+            }
         }
 
         public Country GetCountryByName(string name) // Checks if the country exists by name + to avoid duplicates. Example ignore Sweden and sweden.
