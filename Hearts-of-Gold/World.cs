@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace HeartsOfGold
 {
@@ -10,48 +9,73 @@ namespace HeartsOfGold
 
         public World()
         {
-            // countries (attack, defense, energy)
-            //if New country is added here, remember to update Game.cs country selection logic!!!! It does not auto update!!!
-            AddCountry(new Country("Sweden", 40, 50, 80));
-            AddCountry(new Country("Germany", 80, 100, 120));
-            AddCountry(new Country("United Kingdom", 70, 90, 100));
-            AddCountry(new Country("France", 65, 85, 95));
-            AddCountry(new Country("Poland", 45, 55, 70));
-            AddCountry(new Country("Norway", 30, 35, 60));
+            // Add all countries in the world (attack, defense, energy)
+            // NOTE: If you add a new country here, also add it to the map in Game.cs!
+            AddCountry(new Country("Sweden",         40,  50,  80));
+            AddCountry(new Country("Germany",        80, 100, 120));
+            AddCountry(new Country("United Kingdom", 70,  90, 100));
+            AddCountry(new Country("France",         65,  85,  95));
+            AddCountry(new Country("Poland",         45,  55,  70));
+            AddCountry(new Country("Norway",         30,  35,  60));
         }
 
-        public void AddCountry(Country country) //Makes sure to not make duplicates of countries.
+        // Adds a country to the world, but only if it doesn't already exist
+        public void AddCountry(Country country)
         {
-            if (country != null)
+            // Don't add if the country object is empty
+            if (country == null)
             {
-                bool alreadyExists = false;
+                return;
+            }
 
-                foreach (Country c in Countries)
-                {
-                    if (c.Name == country.Name)
-                    {
-                        alreadyExists = true;
-                    }
-                }
+            // Check if a country with this name already exists
+            bool alreadyExists = false;
 
-                if (!alreadyExists)
+            foreach (Country c in Countries)
+            {
+                if (c.Name == country.Name)
                 {
-                    // add country
+                    alreadyExists = true;
                 }
+            }
+
+            // Only add the country if it's not a duplicate
+            if (alreadyExists == false)
+            {
+                Countries.Add(country); // BUG FIX: this line was missing!
             }
         }
 
-        public Country GetCountryByName(string name) // Checks if the country exists by name + to avoid duplicates. Example ignore Sweden and sweden.
+        // Finds and returns a country by name, or null if not found
+        // Works regardless of capitalisation e.g. "sweden" and "Sweden" both work
+        public Country GetCountryByName(string name)
         {
-            if (string.IsNullOrWhiteSpace(name)) return null;
-            return Countries.FirstOrDefault(c => c.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return null;
+            }
+
+            foreach (Country c in Countries)
+            {
+                bool sameName = c.Name.Equals(name, StringComparison.OrdinalIgnoreCase);
+                if (sameName)
+                {
+                    return c;
+                }
+            }
+
+            return null;
         }
 
-        public void PrintAllCountries() // basically just print the countries.
+        // Prints the status of every country in the world
+        public void PrintAllCountries()
         {
             Console.WriteLine("=== Countries ===");
-            foreach (var c in Countries)
+
+            foreach (Country c in Countries)
+            {
                 c.PrintStatus();
+            }
         }
     }
 }
