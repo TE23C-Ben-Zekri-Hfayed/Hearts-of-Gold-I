@@ -19,6 +19,7 @@ namespace HeartsOfGold
         public string Name
         {
             get { return name; }
+            set { name = value; }
         }
 
         public int AttackPower
@@ -42,6 +43,7 @@ namespace HeartsOfGold
         public bool IsConquered
         {
             get { return isConquered; }
+            set { isConquered = value; }
         }
 
         // Constructor – runs when a new Country is created

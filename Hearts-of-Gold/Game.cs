@@ -2,18 +2,21 @@ using System;
 
 namespace HeartsOfGold
 {
-    // This class controls the main game loop and handles player input
     public class Game
     {
         private World world;
         private Country selectedCountry;
         private Random rng;
 
+        // Tracks whether developer mode is currently active
+        private bool devModeActive;
+
         public Game()
         {
             world = new World();
             selectedCountry = null;
             rng = new Random();
+            devModeActive = false;
         }
 
         public void Run()
@@ -30,12 +33,23 @@ namespace HeartsOfGold
                 Console.WriteLine("4. Show map");
                 Console.WriteLine("5. Select country");
                 Console.WriteLine("6. Train selected country");
+
+                // Only show dev options if dev mode is on
+                if (devModeActive)
+                {
+                    Console.WriteLine("----------- DEV MODE -----------");
+                    Console.WriteLine("7. Edit selected country stats");
+                    Console.WriteLine("8. Add new country");
+                    Console.WriteLine("9. Toggle conquered status");
+                    Console.WriteLine("D. Delete selected country");
+                    Console.WriteLine("--------------------------------");
+                }
+
                 Console.WriteLine("0. Quit");
                 Console.Write("Choice: ");
 
                 string input = Console.ReadLine();
 
-                // Check which option the player typed and run the right action
                 if (input == "1")
                 {
                     world.PrintAllCountries();
@@ -66,6 +80,26 @@ namespace HeartsOfGold
                     HandleTrain();
                     Pause();
                 }
+                else if (input == "7" && devModeActive)
+                {
+                    DevEditCountry();
+                    Pause();
+                }
+                else if (input == "8" && devModeActive)
+                {
+                    DevAddCountry();
+                    Pause();
+                }
+                else if (input == "9" && devModeActive)
+                {
+                    DevToggleConquered();
+                    Pause();
+                }
+                else if ((input == "D" || input == "d") && devModeActive)
+                {
+                    DevDeleteCountry();
+                    Pause();
+                }
                 else if (input == "0")
                 {
                     running = false;
@@ -80,9 +114,240 @@ namespace HeartsOfGold
             Console.WriteLine("Thanks for playing!");
         }
 
+        // -------------------------------------------------------
+        // HANDLE SELECT  (also listens for DevMODE / DevEXIT)
+        // -------------------------------------------------------
+        private void HandleSelect()
+        {
+            Console.Write("Select country by exact name: ");
+            string name = Console.ReadLine();
+
+            // Secret code to turn dev mode ON
+            if (name == "DevMODE")
+            {
+                devModeActive = true;
+                Console.WriteLine("Developer mode activated. New options are now visible in the menu.");
+                return;
+            }
+
+            // Secret code to turn dev mode OFF
+            if (name == "DevEXIT")
+            {
+                devModeActive = false;
+                Console.WriteLine("Developer mode deactivated.");
+                selectedCountry = null;
+                return;
+            }
+
+            // Normal country selection
+            Country found = world.GetCountryByName(name);
+
+            if (found == null)
+            {
+                Console.WriteLine("Country not found.");
+                selectedCountry = null;
+            }
+            else
+            {
+                selectedCountry = found;
+                Console.WriteLine("Selected: " + selectedCountry.Name);
+            }
+        }
+
+        // -------------------------------------------------------
+        // DEV OPTION 7 — Edit all stats of the selected country
+        // -------------------------------------------------------
+        private void DevEditCountry()
+        {
+            if (selectedCountry == null)
+            {
+                Console.WriteLine("[DEV] No country selected. Use option 5 first.");
+                return;
+            }
+
+            Console.WriteLine("[DEV] Editing: " + selectedCountry.Name);
+            Console.WriteLine("      Leave a field blank and press Enter to keep the current value.");
+            Console.WriteLine();
+
+            // Edit name
+            Console.Write("New name (current: " + selectedCountry.Name + "): ");
+            string newName = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(newName))
+            {
+                selectedCountry.Name = newName;
+                Console.WriteLine("  Name updated to: " + selectedCountry.Name);
+            }
+
+            // Edit attack
+            Console.Write("New attack power (current: " + selectedCountry.AttackPower + "): ");
+            string attackInput = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(attackInput))
+            {
+                int newAttack;
+                bool attackValid = int.TryParse(attackInput, out newAttack);
+                if (attackValid)
+                {
+                    selectedCountry.AttackPower = newAttack;
+                    Console.WriteLine("  Attack updated to: " + selectedCountry.AttackPower);
+                }
+                else
+                {
+                    Console.WriteLine("  Invalid number, attack not changed.");
+                }
+            }
+
+            // Edit defense
+            Console.Write("New defense power (current: " + selectedCountry.DefensePower + "): ");
+            string defenseInput = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(defenseInput))
+            {
+                int newDefense;
+                bool defenseValid = int.TryParse(defenseInput, out newDefense);
+                if (defenseValid)
+                {
+                    selectedCountry.DefensePower = newDefense;
+                    Console.WriteLine("  Defense updated to: " + selectedCountry.DefensePower);
+                }
+                else
+                {
+                    Console.WriteLine("  Invalid number, defense not changed.");
+                }
+            }
+
+            // Edit energy
+            Console.Write("New energy (current: " + selectedCountry.Energy + "): ");
+            string energyInput = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(energyInput))
+            {
+                int newEnergy;
+                bool energyValid = int.TryParse(energyInput, out newEnergy);
+                if (energyValid)
+                {
+                    selectedCountry.Energy = newEnergy;
+                    Console.WriteLine("  Energy updated to: " + selectedCountry.Energy);
+                }
+                else
+                {
+                    Console.WriteLine("  Invalid number, energy not changed.");
+                }
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("[DEV] Done editing " + selectedCountry.Name + ".");
+        }
+
+        // -------------------------------------------------------
+        // DEV OPTION 8 — Add a brand new country to the world
+        // -------------------------------------------------------
+        private void DevAddCountry()
+        {
+            Console.WriteLine("[DEV] Add a new country.");
+
+            Console.Write("Country name: ");
+            string name = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                Console.WriteLine("[DEV] Name cannot be empty. Cancelled.");
+                return;
+            }
+
+            if (world.GetCountryByName(name) != null)
+            {
+                Console.WriteLine("[DEV] A country with that name already exists. Cancelled.");
+                return;
+            }
+
+            Console.Write("Attack power: ");
+            string attackInput = Console.ReadLine();
+            int attack;
+            bool attackValid = int.TryParse(attackInput, out attack);
+            if (!attackValid)
+            {
+                Console.WriteLine("[DEV] Invalid attack value. Cancelled.");
+                return;
+            }
+
+            Console.Write("Defense power: ");
+            string defenseInput = Console.ReadLine();
+            int defense;
+            bool defenseValid = int.TryParse(defenseInput, out defense);
+            if (!defenseValid)
+            {
+                Console.WriteLine("[DEV] Invalid defense value. Cancelled.");
+                return;
+            }
+
+            Console.Write("Energy: ");
+            string energyInput = Console.ReadLine();
+            int energy;
+            bool energyValid = int.TryParse(energyInput, out energy);
+            if (!energyValid)
+            {
+                Console.WriteLine("[DEV] Invalid energy value. Cancelled.");
+                return;
+            }
+
+            Country newCountry = new Country(name, attack, defense, energy);
+            world.AddCountry(newCountry);
+            Console.WriteLine("[DEV] " + name + " has been added to the world.");
+        }
+
+        // -------------------------------------------------------
+        // DEV OPTION 9 — Flip a country's conquered status
+        // -------------------------------------------------------
+        private void DevToggleConquered()
+        {
+            if (selectedCountry == null)
+            {
+                Console.WriteLine("[DEV] No country selected. Use option 5 first.");
+                return;
+            }
+
+            selectedCountry.IsConquered = !selectedCountry.IsConquered;
+
+            if (selectedCountry.IsConquered)
+            {
+                Console.WriteLine("[DEV] " + selectedCountry.Name + " has been marked as CONQUERED.");
+            }
+            else
+            {
+                Console.WriteLine("[DEV] " + selectedCountry.Name + " has been marked as FREE.");
+            }
+        }
+
+        // -------------------------------------------------------
+        // DEV OPTION D — Delete the selected country entirely
+        // -------------------------------------------------------
+        private void DevDeleteCountry()
+        {
+            if (selectedCountry == null)
+            {
+                Console.WriteLine("[DEV] No country selected. Use option 5 first.");
+                return;
+            }
+
+            Console.Write("[DEV] Are you sure you want to delete " + selectedCountry.Name + "? (yes/no): ");
+            string confirm = Console.ReadLine();
+
+            if (confirm == "yes")
+            {
+                world.Countries.Remove(selectedCountry);
+                Console.WriteLine("[DEV] " + selectedCountry.Name + " has been removed from the world.");
+                selectedCountry = null;
+            }
+            else
+            {
+                Console.WriteLine("[DEV] Deletion cancelled.");
+            }
+        }
+
+        // -------------------------------------------------------
+        // All original methods below — unchanged
+        // -------------------------------------------------------
+
         private void HandleAttack()
         {
-            // Ask the player for the name of the attacking country
             Console.Write("Attacker (exact name): ");
             string attackerName = Console.ReadLine();
             Country attacker = world.GetCountryByName(attackerName);
@@ -93,7 +358,6 @@ namespace HeartsOfGold
                 return;
             }
 
-            // Ask the player for the name of the defending country
             Console.Write("Defender (exact name): ");
             string defenderName = Console.ReadLine();
             Country defender = world.GetCountryByName(defenderName);
@@ -104,13 +368,11 @@ namespace HeartsOfGold
                 return;
             }
 
-            // Run the attack and store whether it succeeded
             bool attackSucceeded = attacker.Attack(defender);
 
-            // If the attack failed, there is a 10% chance the defender strikes back
             if (attackSucceeded == false)
             {
-                double counterChance = rng.NextDouble(); // gives a number between 0.0 and 1.0
+                double counterChance = rng.NextDouble();
                 bool counterattackHappens = counterChance < 0.10;
 
                 if (counterattackHappens)
@@ -136,7 +398,6 @@ namespace HeartsOfGold
 
         private void HandleAlliance()
         {
-            // Ask for the two countries that want to form an alliance
             Console.Write("Country A (exact name): ");
             string nameA = Console.ReadLine();
             Country countryA = world.GetCountryByName(nameA);
@@ -157,7 +418,6 @@ namespace HeartsOfGold
                 return;
             }
 
-            // Try to form the alliance
             bool allianceFormed = countryA.FormAlliance(countryB);
 
             if (allianceFormed)
@@ -170,27 +430,8 @@ namespace HeartsOfGold
             }
         }
 
-        private void HandleSelect()
-        {
-            Console.Write("Select country by exact name: ");
-            string name = Console.ReadLine();
-            Country found = world.GetCountryByName(name);
-
-            if (found == null)
-            {
-                Console.WriteLine("Country not found.");
-                selectedCountry = null;
-            }
-            else
-            {
-                selectedCountry = found;
-                Console.WriteLine("Selected: " + selectedCountry.Name);
-            }
-        }
-
         private void HandleTrain()
         {
-            // Make sure a country has been selected first
             if (selectedCountry == null)
             {
                 Console.WriteLine("No country selected. Use option 5 to select a country first.");
@@ -207,7 +448,6 @@ namespace HeartsOfGold
 
             if (choice == "1")
             {
-                // Check the country has enough energy before training
                 if (selectedCountry.Energy < 5)
                 {
                     Console.WriteLine("Not enough energy to train attack.");
@@ -245,7 +485,6 @@ namespace HeartsOfGold
 
         private void PrintMap()
         {
-            // Draw a simple text map, replacing country codes with XXX if conquered
             string[] map =
             {
                 "+--------------------------------------+",
@@ -271,7 +510,6 @@ namespace HeartsOfGold
             }
         }
 
-        // Replaces a short country code on the map with XXX if that country has been conquered
         private string ReplaceShort(string line, string shortCode, Country country)
         {
             if (country == null)
