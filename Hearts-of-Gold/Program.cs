@@ -1,5 +1,7 @@
 ﻿using System;
 
+//THIS IS THE START AN ONLY FOR THE START
+
 namespace HeartsOfGold
 {
     class Program
@@ -11,7 +13,7 @@ namespace HeartsOfGold
             Console.WriteLine("Press Enter to continue...");
             Console.ReadLine();
 
-            // Ask for the player's name and keep asking until they type something
+            // Ask for the player's name and keep asking until they type something because yk
             Console.WriteLine("Please enter your name:");
             string playerName = Console.ReadLine();
 
@@ -28,7 +30,7 @@ namespace HeartsOfGold
             Console.WriteLine("1. Easy   2. Normal   3. Hard");
             string difficulty = Console.ReadLine();
 
-            if (difficulty == "1")
+            if (difficulty == "1")  // Literally doesn't do anything lol
             {
                 Console.WriteLine("You chose Easy. Good luck!");
             }

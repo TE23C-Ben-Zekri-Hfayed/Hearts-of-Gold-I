@@ -1,5 +1,7 @@
 using System;
 
+//THIS IS THE GAME FILE, EVERYTHING THAT A PLAYER CAN DO IN THE GAME IS HANDLED HERE, THIS IS THE BIG ONE. ALSO THE DEV MODE OPTIONS ARE ALL HERE, BUT THEY ARE HIDDEN UNLESS YOU KNOW THE SECRET CODE (line 128 btw) TO TURN DEV MODE ON (AND OFF).
+
 namespace HeartsOfGold
 {
     public class Game
@@ -368,6 +370,12 @@ namespace HeartsOfGold
                 return;
             }
 
+             if (defenderName == attackerName)
+            {
+                Console.WriteLine("You can't attack yourself! Choose different countries.");
+                return;
+            }
+
             bool attackSucceeded = attacker.Attack(defender);
 
             if (attackSucceeded == false)
@@ -501,7 +509,7 @@ namespace HeartsOfGold
 
                 output = ReplaceShort(output, "SWE", world.GetCountryByName("Sweden"));
                 output = ReplaceShort(output, "GER", world.GetCountryByName("Germany"));
-                output = ReplaceShort(output, "UK",  world.GetCountryByName("United Kingdom"));
+                output = ReplaceShort(output, "UK", world.GetCountryByName("United Kingdom"));
                 output = ReplaceShort(output, "FRA", world.GetCountryByName("France"));
                 output = ReplaceShort(output, "POL", world.GetCountryByName("Poland"));
                 output = ReplaceShort(output, "NOR", world.GetCountryByName("Norway"));

@@ -37,7 +37,7 @@ namespace HeartsOfGold
         public int Energy
         {
             get { return energy; }
-            set { energy = Math.Clamp(value, 0, 200); } // Energy is limited between 0 and 200
+            set { energy = Math.Clamp(value, 0, 200); } // Energy is limited between 0 and 200 simple chagne
         }
 
         public bool IsConquered
@@ -71,7 +71,7 @@ namespace HeartsOfGold
                 allyNames = string.Join(", ", allies.Select(a => a.Name));
             }
 
-            Console.WriteLine(Name + " - Atk: " + AttackPower +
+            Console.WriteLine(Name + " - Atk: " + AttackPower + //This is the stats
                               ", Def: " + DefensePower +
                               ", Eng: " + Energy +
                               ", Conquered: " + IsConquered +

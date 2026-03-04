@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 
+//THIS IS THE WORLD FILE, HERE YOU CHANGE EVERYTHING ABOUT THE COUNTRIES IN THE GAME.
+
 namespace HeartsOfGold
 {
     public class World
@@ -10,13 +12,13 @@ namespace HeartsOfGold
         public World()
         {
             // Add all countries in the world (attack, defense, energy)
-            // NOTE: If you add a new country here, also add it to the map in Game.cs!
-            AddCountry(new Country("Sweden",         40,  50,  80));
-            AddCountry(new Country("Germany",        80, 100, 120));
-            AddCountry(new Country("United Kingdom", 70,  90, 100));
-            AddCountry(new Country("France",         65,  85,  95));
-            AddCountry(new Country("Poland",         45,  55,  70));
-            AddCountry(new Country("Norway",         30,  35,  60));
+            // If you add a new country here and not in-game, also add it to the map in Game.cs, it does NOT auto update!!!!!!!
+            AddCountry(new Country("Sweden", 40, 50, 80));
+            AddCountry(new Country("Germany", 80, 100, 120));
+            AddCountry(new Country("United Kingdom", 70, 90, 100));
+            AddCountry(new Country("France", 65, 85, 95));
+            AddCountry(new Country("Poland", 45, 55, 70));
+            AddCountry(new Country("Norway", 30, 35, 60));
         }
 
         // Adds a country to the world, but only if it doesn't already exist
@@ -47,7 +49,7 @@ namespace HeartsOfGold
         }
 
         // Finds and returns a country by name, or null if not found
-        // Works regardless of capitalisation e.g. "sweden" and "Sweden" both work
+        // Works regardless of capitalisation e.g. "sweden" and "Sweden" both work because honesty it's annoying
         public Country GetCountryByName(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -67,7 +69,7 @@ namespace HeartsOfGold
             return null;
         }
 
-        // Prints the status of every country in the world
+        // Prints the status of every country in the world WITH the stats (Maybe make it look nicer later but for now it works and is functional so who cares)
         public void PrintAllCountries()
         {
             Console.WriteLine("=== Countries ===");
