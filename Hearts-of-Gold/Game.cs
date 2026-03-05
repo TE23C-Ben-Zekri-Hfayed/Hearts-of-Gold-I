@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 
 //THIS IS THE GAME FILE, EVERYTHING THAT A PLAYER CAN DO IN THE GAME IS HANDLED HERE, THIS IS THE BIG ONE. ALSO THE DEV MODE OPTIONS ARE ALL HERE, BUT THEY ARE HIDDEN UNLESS YOU KNOW THE SECRET CODE (line 128 btw) TO TURN DEV MODE ON (AND OFF).
 
@@ -12,6 +13,7 @@ namespace HeartsOfGold
 
         // Tracks whether developer mode is currently active
         private bool devModeActive;
+        int landwon = 0;
 
         public Game()
         {
@@ -19,7 +21,9 @@ namespace HeartsOfGold
             selectedCountry = null;
             rng = new Random();
             devModeActive = false;
+            landwon = 0;
         }
+
 
         public void Run()
         {
@@ -27,6 +31,14 @@ namespace HeartsOfGold
 
             while (running)
             {
+
+                if (landwon == 5)
+                {
+                    Console.WriteLine("Congratulations! You have conquered all the land and won the game!");
+                    Console.WriteLine("Thanks for playing Hearts of Gold I!");
+                    Console.ReadLine();
+                    running = false;
+                }
                 Console.Clear();
                 Console.WriteLine("Hearts of Gold - Main Menu");
                 Console.WriteLine("1. Show countries");
@@ -47,7 +59,7 @@ namespace HeartsOfGold
                     Console.WriteLine("--------------------------------");
                 }
 
-                Console.WriteLine("0. Quit");
+                Console.WriteLine("Q. Quit");
                 Console.Write("Choice: ");
 
                 string input = Console.ReadLine();
@@ -102,9 +114,23 @@ namespace HeartsOfGold
                     DevDeleteCountry();
                     Pause();
                 }
-                else if (input == "0")
+                else if (input == "Q" || input == "q")
                 {
-                    running = false;
+
+                    Console.WriteLine("You are about to exit the game, are you sure? Yes/No"); // Quit function
+
+                    string answer = Console.ReadLine();
+
+                    if (answer == "Yes" || answer == "yes")
+                    {
+                        running = false;
+                    }
+                    else if (answer == "No" || answer == null || answer == "no")
+                    {
+                        Pause();
+                    }
+
+
                 }
                 else
                 {
@@ -370,9 +396,9 @@ namespace HeartsOfGold
                 return;
             }
 
-             if (defenderName == attackerName)
+            if (defenderName == attackerName) //Added for anti attacking yourself
             {
-                Console.WriteLine("You can't attack yourself! Choose different countries.");
+                Console.WriteLine("You can't attack your own country! Choose different countries.");
                 return;
             }
 
@@ -391,6 +417,7 @@ namespace HeartsOfGold
                     if (counterSucceeded)
                     {
                         Console.WriteLine(defender.Name + " successfully counter-conquered " + attacker.Name + "!");
+                        landwon++;
                     }
                     else
                     {
@@ -539,11 +566,13 @@ namespace HeartsOfGold
             return line.Replace(shortCode, label);
         }
 
+
         private void Pause()
         {
             Console.WriteLine();
             Console.WriteLine("Press Enter to continue...");
             Console.ReadLine();
         }
+
     }
 }

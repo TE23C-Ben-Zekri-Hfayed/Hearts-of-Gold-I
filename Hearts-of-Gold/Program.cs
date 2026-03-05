@@ -23,7 +23,7 @@ namespace HeartsOfGold
                 playerName = Console.ReadLine();
             }
 
-            Console.WriteLine("Welcome, " + playerName + "!");
+            Console.WriteLine("Welcome, General " + playerName + "!");
 
             // Ask the player to pick a difficulty (stored but not yet used)
             Console.WriteLine("Choose the game's difficulty:");
