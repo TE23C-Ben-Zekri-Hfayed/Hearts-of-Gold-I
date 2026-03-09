@@ -132,6 +132,13 @@ namespace HeartsOfGold
 
 
                 }
+                else if (input == "P" || input == "p")
+                {
+                    Console.Clear();
+                    Console.WriteLine("You're not supposed to see this btw");
+                    Console.ReadLine();
+                    running = false;
+                }
                 else
                 {
                     Console.WriteLine("Invalid choice.");
