@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Hearts-of-Gold")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c4fac606c6cb59ec8f3993da5b07dd1ac77feece")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6a0bc621033922f94c9d5bfc2a5ca017016d9544")]
 [assembly: System.Reflection.AssemblyProductAttribute("Hearts-of-Gold")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Hearts-of-Gold")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
