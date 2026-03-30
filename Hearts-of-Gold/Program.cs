@@ -1,6 +1,6 @@
 ﻿using System;
 
-//THIS IS THE START AN ONLY FOR THE START
+//THIS IS THE START AND ONLY FOR THE START
 
 namespace HeartsOfGold
 {
