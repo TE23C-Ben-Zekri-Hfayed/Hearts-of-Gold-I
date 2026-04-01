@@ -47,8 +47,6 @@ namespace HeartsOfGold
                 Console.WriteLine("4. Show map");
                 Console.WriteLine("5. Select country");
                 Console.WriteLine("6. Train selected country");
-                Console.WriteLine("O. Set Occupation state");
-                Console.WriteLine("L. Show Occupation state");
 
                 // Only show dev options if dev mode is on
                 if (devModeActive)
@@ -141,12 +139,6 @@ namespace HeartsOfGold
                     Console.ReadLine();
                     running = false;
                 }
-                else if (input == "O" || input == "o")
-                {
-
-
-                    
-                }
                 else
                 {
                     Console.WriteLine("Invalid choice.");
@@ -165,10 +157,8 @@ namespace HeartsOfGold
             Console.Write("Select country by exact name: ");
             string name = Console.ReadLine();
 
-            if (name == "")
-
             // Secret code to turn dev mode ON
-            if (name == "DevMODE")
+            if (name == "Devmode")
             {
                 devModeActive = true;
                 Console.WriteLine("Developer mode activated. New options are now visible in the menu.");
