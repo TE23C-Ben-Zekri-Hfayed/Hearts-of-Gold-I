@@ -188,6 +188,7 @@ namespace HeartsOfGold
             {
                 selectedCountry = found;
                 Console.WriteLine("Selected: " + selectedCountry.Name);
+                ShowCountryIntel(selectedCountry.Name);
             }
         }
 
@@ -577,16 +578,22 @@ namespace HeartsOfGold
 
         private void ShowCountryIntel(string countryName)
         {
+            HttpClient client = new HttpClient();
+            string url = "https://restcountries.com/v3.1/name/" + countryName + "?fullText=true"; //Site to get country info, obv add them together
+            string json = client.GetStringAsync(url).Result;
 
-            string apiName = countryName;
-            if (countryName == "United Kingdom") apiName = "United Kingdom";
-            if (countryName == "Germany") apiName = "Germany";
-            if (countryName == "France") apiName = "France";
-            if (countryName == "Sweden") apiName = "Sweden";
-            if (countryName == "Norway") apiName = "Norway";
-            if (countryName == "Poland") apiName = "Poland";
+            JsonDocument doc = JsonDocument.Parse(json);
+            JsonElement country = doc.RootElement[0];
 
+            string capital = country.GetProperty("capital")[0].GetString();
+            long population = country.GetProperty("population").GetInt64();
+            string region = country.GetProperty("subregion").GetString();
 
+            Console.WriteLine("--- INTEL REPORT ---");
+            Console.WriteLine("Capital: " + capital);
+            Console.WriteLine("Population: " + population);
+            Console.WriteLine("Region: " + region);
+            Console.WriteLine("--------------------");
         }
 
 
