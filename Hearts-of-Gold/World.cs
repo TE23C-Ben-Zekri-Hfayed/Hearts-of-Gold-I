@@ -1,39 +1,40 @@
 using System;
 using System.Collections.Generic;
 
-//THIS IS THE WORLD FILE, HERE YOU CHANGE EVERYTHING ABOUT THE COUNTRIES IN THE GAME.
-
 namespace HeartsOfGold
 {
     public class World
     {
-        public List<Country> Countries { get; } = new List<Country>();
+        // Använder generisk GameRegistry istället för List direkt
+        private GameRegistry<Country> registry = new GameRegistry<Country>();
+
+        // Kept for compatibility with Game.cs
+        public List<Country> Countries
+        {
+            get { return registry.GetAll(); }
+        }
 
         public World()
         {
-            // Add all countries in the world (attack, defense, energy)
-            // If you add a new country here and not in-game, also add it to the map in Game.cs, it does NOT auto update!!!!!!!
+            // Germany and United Kingdom are Superpowers – starkare länder
             AddCountry(new Country("Sweden", 40, 50, 80));
-            AddCountry(new Country("Germany", 80, 100, 120));
-            AddCountry(new Country("United Kingdom", 70, 90, 100));
+            AddCountry(new Superpower("Germany", 80, 100, 120, "Empire"));
+            AddCountry(new Superpower("United Kingdom", 70, 90, 100, "Commonwealth"));
             AddCountry(new Country("France", 65, 85, 95));
             AddCountry(new Country("Poland", 45, 55, 70));
             AddCountry(new Country("Norway", 30, 35, 60));
         }
 
-        // Adds a country to the world, but only if it doesn't already exist
         public void AddCountry(Country country)
         {
-            // Don't add if the country object is empty
             if (country == null)
             {
                 return;
             }
 
-            // Check if a country with this name already exists
             bool alreadyExists = false;
 
-            foreach (Country c in Countries)
+            foreach (Country c in registry.GetAll())
             {
                 if (c.Name == country.Name)
                 {
@@ -41,15 +42,12 @@ namespace HeartsOfGold
                 }
             }
 
-            // Only add the country if it's not a duplicate
-            if (alreadyExists == false)
+            if (alreadyExists == false) // easy to understand duh 
             {
-                Countries.Add(country); // BUG FIX: this line was missing!
+                registry.Add(country);
             }
         }
 
-        // Finds and returns a country by name, or null if not found
-        // Works regardless of capitalisation e.g. "sweden" and "Sweden" both work because honesty it's annoying
         public Country GetCountryByName(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -57,7 +55,7 @@ namespace HeartsOfGold
                 return null;
             }
 
-            foreach (Country c in Countries)
+            foreach (Country c in registry.GetAll())
             {
                 bool sameName = c.Name.Equals(name, StringComparison.OrdinalIgnoreCase);
                 if (sameName)
@@ -69,14 +67,15 @@ namespace HeartsOfGold
             return null;
         }
 
-        // Prints the status of every country in the world WITH the stats (Maybe make it look nicer later but for now it works and is functional so who cares)
         public void PrintAllCountries()
         {
             Console.WriteLine("=== Countries ===");
 
-            foreach (Country c in Countries)
+            foreach (Country c in registry.GetAll())
             {
                 c.PrintStatus();
+                // Visar beskrivningen – använder polymorfism (GetDescription)
+                Console.WriteLine("  > " + c.GetDescription());
             }
         }
     }

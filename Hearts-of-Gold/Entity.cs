@@ -40,5 +40,11 @@ namespace HeartsOfGold
             this.defense = Math.Max(0, defense);
             this.energy = Math.Max(0, energy);
         }
+
+        // Virtual – kan overridas av subklasser
+        public virtual string GetDescription()
+        {
+            return Name + " is a standard entity.";
+        }
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace HeartsOfGold
 {
-    public class Country : Entity  // enkelt arv - Country ärver från Entity
+    public class Country : Entity
     {
         private bool isConquered;
         private List<Country> allies;
@@ -15,12 +15,17 @@ namespace HeartsOfGold
             set { isConquered = value; }
         }
 
-        // Constructor calls base (Entity) for the shared stats
         public Country(string name, int attack, int defense, int energy)
             : base(name, attack, defense, energy)
         {
             this.isConquered = false;
             this.allies = new List<Country>();
+        }
+
+        // Override – country has its own beskrivning
+        public override string GetDescription()
+        {
+            return Name + " is a country with " + AttackPower + " attack and " + DefensePower + " defense.";
         }
 
         public void PrintStatus()
@@ -60,7 +65,8 @@ namespace HeartsOfGold
             return true;
         }
 
-        public bool Attack(Country defender)
+        // the superpower can override it
+        public virtual bool Attack(Country defender)
         {
             if (defender == null)
             {
