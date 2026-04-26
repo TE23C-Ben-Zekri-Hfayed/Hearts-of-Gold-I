@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Net.Http;
-
+using System.Text.Json;
 
 //THIS IS THE GAME FILE, EVERYTHING THAT A PLAYER CAN DO IN THE GAME IS HANDLED HERE, THIS IS THE BIG ONE. ALSO THE DEV MODE OPTIONS ARE ALL HERE, BUT THEY ARE HIDDEN UNLESS YOU KNOW THE SECRET CODE (line 128 btw) TO TURN DEV MODE ON (AND OFF).
 
@@ -554,7 +554,7 @@ namespace HeartsOfGold
             }
         }
 
-        private string ReplaceShort(string line, string shortCode, Country country)
+        private string ReplaceShort(string line, string shortCode, Country country) //Replace countries with short text
         {
             if (country == null)
             {
@@ -573,6 +573,20 @@ namespace HeartsOfGold
             }
 
             return line.Replace(shortCode, label);
+        }
+
+        private void ShowCountryIntel(string countryName)
+        {
+
+            string apiName = countryName;
+            if (countryName == "United Kingdom") apiName = "United Kingdom";
+            if (countryName == "Germany") apiName = "Germany";
+            if (countryName == "France") apiName = "France";
+            if (countryName == "Sweden") apiName = "Sweden";
+            if (countryName == "Norway") apiName = "Norway";
+            if (countryName == "Poland") apiName = "Poland";
+
+
         }
 
 
