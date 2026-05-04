@@ -17,7 +17,6 @@ namespace HeartsOfGold
             world = new World();
             rng = new Random();
         }
-
         public void Run()
         {
             bool running = true;
@@ -80,7 +79,6 @@ namespace HeartsOfGold
             }
             Console.WriteLine("Thanks for playing!");
         }
-
         private void HandleSelect()
         {
             Console.Write("Select country by exact name: ");
@@ -93,7 +91,6 @@ namespace HeartsOfGold
             if (selectedCountry == null) Console.WriteLine("Country not found.");
             else { Console.WriteLine("Selected: " + selectedCountry.Name); ShowCountryIntel(selectedCountry.Name); }
         }
-
         // Helper: prompt for an int, returns false if blank (keep current) or invalid
         private bool TryReadInt(string prompt, out int result)
         {
@@ -103,7 +100,6 @@ namespace HeartsOfGold
             if (!int.TryParse(input, out result)) { Console.WriteLine("  Invalid number, not changed."); return false; }
             return true;
         }
-
         private void DevEditCountry()
         {
             if (selectedCountry == null) { Console.WriteLine("[DEV] No country selected."); return; }
@@ -124,7 +120,6 @@ namespace HeartsOfGold
 
             Console.WriteLine("\n[DEV] Done editing " + selectedCountry.Name + ".");
         }
-
         private void DevAddCountry()
         {
             Console.WriteLine("[DEV] Add a new country.");
@@ -145,14 +140,12 @@ namespace HeartsOfGold
             world.AddCountry(new Country(name, attack, defense, energy));
             Console.WriteLine("[DEV] " + name + " has been added to the world.");
         }
-
         private void DevToggleConquered()
         {
             if (selectedCountry == null) { Console.WriteLine("[DEV] No country selected."); return; }
             selectedCountry.IsConquered = !selectedCountry.IsConquered;
             Console.WriteLine("[DEV] " + selectedCountry.Name + " marked as " + (selectedCountry.IsConquered ? "CONQUERED" : "FREE") + ".");
         }
-
         private void DevDeleteCountry()
         {
             if (selectedCountry == null) { Console.WriteLine("[DEV] No country selected."); return; }
@@ -165,7 +158,6 @@ namespace HeartsOfGold
             }
             else Console.WriteLine("[DEV] Deletion cancelled.");
         }
-
         private void Showint()
         {
 
@@ -175,7 +167,6 @@ namespace HeartsOfGold
 
 
         }
-
         private void HandleAttack()
         {
             Console.Write("Attacker (exact name): ");
@@ -202,8 +193,6 @@ namespace HeartsOfGold
             }
             else Console.WriteLine("No counterattack occurred.");
         }
-
-            
         private void HandleAlliance()
         {
             Console.Write("Country A (exact name): ");
@@ -218,7 +207,6 @@ namespace HeartsOfGold
                 ? countryA.Name + " and " + countryB.Name + " are now allies."
                 : "Could not form alliance (maybe already allies or conquered).");
         }
-
         private void HandleTrain()
         {
             if (selectedCountry == null) { Console.WriteLine("No country selected. Use option 5 first."); return; }
@@ -245,7 +233,6 @@ namespace HeartsOfGold
                     break;
             }
         }
-
         private void PrintMap()
         {
             string[] map = {
@@ -265,13 +252,11 @@ namespace HeartsOfGold
                 Console.WriteLine(output);
             }
         }
-
         private string ReplaceShort(string line, string shortCode, Country country)
         {
             if (country == null) return line;
             return line.Replace(shortCode, country.IsConquered ? "XXX" : shortCode);
         }
-
         private void ShowCountryIntel(string countryName)
         {
             HttpClient client = new HttpClient();
@@ -284,7 +269,6 @@ namespace HeartsOfGold
             Console.WriteLine("Region: " + country.GetProperty("subregion").GetString());
             Console.WriteLine("--------------------");
         }
-
         private void Pause()
         {
             Console.WriteLine("\nPress Enter to continue...");
