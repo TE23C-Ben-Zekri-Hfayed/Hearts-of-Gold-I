@@ -1,0 +1,129 @@
+// LEGEND FILE - This explains what everything in Game.cs does
+
+VARIABLES (the ones at the top of the class)
+
+world
+    This holds all the countries. Think of it as the game world.
+    Every country that exists in the game lives inside this.
+
+selectedCountry
+    Whichever country the player has picked using option 5.
+    A lot of methods need this to be set before they do anything.
+
+rng
+    Short for "random number generator". Used to roll the dice
+    on things like whether a counterattack happens.
+
+devModeActive
+    True or false. If its true, the dev menu shows up in the game.
+    You turn it on by typing "Devmode" when selecting a country.
+
+    Just a boolean, however this made me remember that I have a landwon int to fix...
+
+
+landwon
+    Counts how many lands have been conquered. Hit 5 and you win.
+
+    update. So the game didnt want to end even if you conquered 5 countries, I took a look and saw that the landwon++; was not counting up, and then I realized that it didnt because it was inside another method where the shi didnt have ANYTHING to do with winning a country. However I fixed it and now if you conquer 5 countries you will be shown the yippie you won text.
+---
+
+METHODS - what each one does
+
+Game()
+    This is the constructor. It runs once when the game starts.
+    It sets everything to its starting value, world, rng, devmode off, landwon = 0.
+
+Run()
+    This is the main loop. The whole game runs inside here.
+    It keeps going until the player quits or wins.
+    Every loop it checks if you won, clears the screen, shows the menu,
+    reads what you typed, and calls the right method.
+
+HandleSelect()
+    Called when you pick option 5.
+    You type a country name and it tries to find it.
+    If you type "Devmode" it secretly turns dev mode on.
+    If you type "DevEXIT" it turns dev mode off.
+    Otherwise it just sets that country as selectedCountry
+    and shows the intel report for it.
+
+HandleAttack()
+    Called when you pick option 2.
+    You type an attacker and a defender.
+    It stops you if you try to attack yourself.
+    Then it runs the attack. If the attack fails there is a 10% chance
+    the defender fires back with a counterattack.
+    If the counterattack works, landwon goes up by 1.
+
+HandleAlliance()
+    Called when you pick option 3.
+    You pick two countries and it tries to make them allies.
+    It just calls FormAlliance() on the country and prints if it worked.
+
+HandleTrain()
+    Called when you pick option 6.
+    Only works if you have a country selected.
+    Three options, train attack, train defense, or train energy.
+    Attack and defense both cost 5 energy to train.
+    Energy training just gives you 15 energy for free.
+
+PrintMap()
+    Called when you pick option 4.
+    It prints a basic text map of Europe with the six countries on it.
+    If a country is conquered it shows XXX instead of the short name.
+
+ReplaceShort()
+    A helper used by PrintMap.
+    It takes a line of the map and swaps out the short country code
+    for XXX if that country is conquered, otherwise it leaves it alone.
+
+ShowCountryIntel()
+    Called automatically when you select a country.
+    It connects to a real website (restcountries.com) to get info
+    about the country, like capital, population, and region.
+    Then it prints that as an intel report.
+
+TryReadInt()
+    A helper method used in the dev options.
+    It asks for a number, and if what you type is blank it skips it,
+    if its not a valid number it tells you and returns false.
+    Stops the same 5 lines of code from being copy pasted everywhere.
+
+DevEditCountry()
+    Dev option 7.
+    Lets you change the name, attack, defense, and energy of a country.
+    Leave a field blank if you dont want to change it.
+
+DevAddCountry()
+    Dev option 8.
+    Lets you add a brand new country to the game.
+    You type the name, attack, defense, and energy for it.
+
+DevToggleConquered()
+    Dev option 9.
+    Flips the conquered status of the selected country.
+    If it was free it becomes conquered, if it was conquered it becomes free.
+
+DevDeleteCountry()
+    Dev option D.
+    Deletes the selected country from the world entirely.
+    Asks you to confirm before it does it.
+
+Pause()
+    Just prints a blank line and "Press Enter to continue".
+    Called after almost every action so the player can read what happened.
+    Note. Which can be replaced by Console.readline which does exactly the same thing as Pause but come on, Pause just looks better....Give me A pls...
+
+---
+
+OTHER STUFF WORTH KNOWING
+
+The secret dev mode code is "Devmode" (capital D, typed when selecting a country)
+To turn it off type "DevEXIT"
+There is also a hidden option P in the main menu that exits the game with a message
+
+The "P" easter egg is just for fun, its not really supposed to be found.
+
+The comment at the very top of Game.cs tells you the dev code is on line 128
+
+so lmao if you're reading this, honestly im too much of a dumbass to completely remember ALL coding knowledge without mistakes... So it's for me

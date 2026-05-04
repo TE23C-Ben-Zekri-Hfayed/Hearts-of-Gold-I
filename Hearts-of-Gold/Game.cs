@@ -25,6 +25,7 @@ namespace HeartsOfGold
             {
                 if (landwon == 5)
                 {
+                    Console.Clear();
                     Console.WriteLine("Congratulations! You have conquered all the land and won the game!");
                     Console.WriteLine("Thanks for playing Hearts of Gold I!");
                     Console.ReadLine();
@@ -54,6 +55,7 @@ namespace HeartsOfGold
                     case "4": PrintMap(); Pause(); break;
                     case "5": HandleSelect(); Pause(); break;
                     case "6": HandleTrain(); Pause(); break;
+                    case "I": Showint(); Pause(); break;
                     case "7" when devModeActive: DevEditCountry(); Pause(); break;
                     case "8" when devModeActive: DevAddCountry(); Pause(); break;
                     case "9" when devModeActive: DevToggleConquered(); Pause(); break;
@@ -164,6 +166,16 @@ namespace HeartsOfGold
             else Console.WriteLine("[DEV] Deletion cancelled.");
         }
 
+        private void Showint()
+        {
+
+            Console.Clear();
+            Console.WriteLine($"You have {landwon} ");
+            Console.ReadLine();
+
+
+        }
+
         private void HandleAttack()
         {
             Console.Write("Attacker (exact name): ");
@@ -177,19 +189,21 @@ namespace HeartsOfGold
             Country defender = world.GetCountryByName(defenderName);
             if (defender == null) { Console.WriteLine("Defender not found."); return; }
 
+            landwon++;
+
             if (!attacker.Attack(defender) && rng.NextDouble() < 0.10)
             {
                 Console.WriteLine(defender.Name + " attempts a counterattack!");
                 if (defender.Attack(attacker))
                 {
                     Console.WriteLine(defender.Name + " successfully counter-conquered " + attacker.Name + "!");
-                    landwon++;
                 }
                 else Console.WriteLine(defender.Name + " failed the counterattack.");
             }
             else Console.WriteLine("No counterattack occurred.");
         }
 
+            
         private void HandleAlliance()
         {
             Console.Write("Country A (exact name): ");
