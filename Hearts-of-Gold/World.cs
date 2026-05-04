@@ -74,7 +74,7 @@ namespace HeartsOfGold
             foreach (Country c in registry.GetAll())
             {
                 c.PrintStatus();
-                // Visar beskrivningen – använder polymorfism (GetDescription)
+                // Visar beskrivningen 
                 Console.WriteLine("  > " + c.GetDescription());
             }
         }
